@@ -8,7 +8,8 @@ let db = new sqlite3.Database(DBSOURCE, (err) => {
         console.error(err.message)
         throw err
     } else {
-        console.log('Connected to the SQLite database.')
+        console.log('Connected to the SQLite database.');
+
         db.run(`CREATE TABLE users (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             name text, 
@@ -21,11 +22,31 @@ let db = new sqlite3.Database(DBSOURCE, (err) => {
                     // Table already created
                 } else {
                     // Table just created, creating some rows
-                    var insert = 'INSERT INTO users (name, email, password) VALUES (?,?,?)'
-                    db.run(insert, ["admin", "admin@example.com", "admin123456"])
-                    db.run(insert, ["user", "user@example.com", "user123456"])
+                    // var insert = 'INSERT INTO users (name, email, password) VALUES (?,?,?)'
+                    // db.run(insert, ["admin", "admin@example.com", "admin123456"])
+                    // db.run(insert, ["user", "user@example.com", "user123456"])
                 }
             });
+
+        db.run(`CREATE TABLE todo (
+                todoId INTEGER PRIMARY KEY AUTOINCREMENT,
+                userId INTEGER,
+                name TEXT,
+                completed INTEGER,
+                deleted INTEGER,
+                FOREIGN KEY(userId) REFERENCES users(userId)
+                )`,
+            (err) => {
+                if (err) {
+                    // Table already created
+                } else {
+                    // Table just created, creating some rows
+                    var insert = 'INSERT INTO todo (userId, name, completed, deleted) VALUES (?,?,?,?)'
+                    db.run(insert, [17, "Buy groceries", 0, 0])
+                    db.run(insert, [18, "Clean the house", 0, 0])
+                }
+            });
+
     }
 });
 

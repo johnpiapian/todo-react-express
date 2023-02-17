@@ -1,10 +1,12 @@
 const jwtUtil = require('../Utils/Jwt');
+const bcryptUtil = require('../Utils/Bcrypt');
 const userService = require('./userService');
 
 function authenticate(email, password) {
     return userService.findByEmail(email)
-        .then((user) => {
-            if (user && user.password === password) {
+        .then(async (user) => {
+            let passwordVerified = await bcryptUtil.comparePassword(password, user.password);
+            if (user && passwordVerified) {
                 return jwtUtil.generateToken(user);
             } else {
                 throw new Error('Invalid email or password');
@@ -12,7 +14,9 @@ function authenticate(email, password) {
         });
 }
 
-function signup(name, email, password) {
+async function signup(name, email, password) {
+    password = await bcryptUtil.hashPassword(password);
+
     return userService.create({ name, email, password })
         .then((userId) => {
             if (userId) {

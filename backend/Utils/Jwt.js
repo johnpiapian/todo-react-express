@@ -11,7 +11,7 @@ function verifyToken(token) {
     const decoded = jwt.verify(token, jwtSecret);
     return decoded;
   } catch (err) {
-    throw new Error('Invalid or expired token');
+    return null;
   }
 }
 
