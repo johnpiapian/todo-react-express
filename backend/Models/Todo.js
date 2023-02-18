@@ -3,7 +3,7 @@ const db = require('../Config/database');
 // find all todos belong to userId
 function findByUserId(userId) {
     return new Promise((resolve, reject) => {
-        const query = 'SELECT * FROM todos WHERE userId = ? AND deleted = 0';
+        const query = 'SELECT todoId, name, completed FROM todos WHERE userId = ? AND deleted = 0';
         db.all(query, [userId], function (err, rows) {
             if (err) {
                 reject(err);
