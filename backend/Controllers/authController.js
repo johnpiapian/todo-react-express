@@ -1,6 +1,5 @@
 const userService = require('../Services/authService');
 
-// POST::/auth/login
 function login(req, res) {
     // get the user details from the request body
     let { email, password } = req.body;
@@ -22,7 +21,6 @@ function login(req, res) {
         });
 }
 
-// POST::/auth/signup
 function signup(req, res) {
     let { name, email, password } = req.body;
 

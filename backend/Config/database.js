@@ -11,10 +11,10 @@ let db = new sqlite3.Database(DBSOURCE, (err) => {
         console.log('Connected to the SQLite database.');
 
         db.run(`CREATE TABLE users (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            name text, 
-            email text UNIQUE, 
-            password text, 
+            userId INTEGER PRIMARY KEY AUTOINCREMENT,
+            name TEXT NOT NULL, 
+            email TEXT UNIQUE, 
+            password TEXT NOT NULL, 
             CONSTRAINT email_unique UNIQUE (email)
             )`,
             (err) => {
@@ -22,16 +22,13 @@ let db = new sqlite3.Database(DBSOURCE, (err) => {
                     // Table already created
                 } else {
                     // Table just created, creating some rows
-                    // var insert = 'INSERT INTO users (name, email, password) VALUES (?,?,?)'
-                    // db.run(insert, ["admin", "admin@example.com", "admin123456"])
-                    // db.run(insert, ["user", "user@example.com", "user123456"])
                 }
             });
 
-        db.run(`CREATE TABLE todo (
+        db.run(`CREATE TABLE todos (
                 todoId INTEGER PRIMARY KEY AUTOINCREMENT,
                 userId INTEGER,
-                name TEXT,
+                name TEXT NOT NULL,
                 completed INTEGER,
                 deleted INTEGER,
                 FOREIGN KEY(userId) REFERENCES users(userId)
@@ -41,9 +38,6 @@ let db = new sqlite3.Database(DBSOURCE, (err) => {
                     // Table already created
                 } else {
                     // Table just created, creating some rows
-                    var insert = 'INSERT INTO todo (userId, name, completed, deleted) VALUES (?,?,?,?)'
-                    db.run(insert, [17, "Buy groceries", 0, 0])
-                    db.run(insert, [18, "Clean the house", 0, 0])
                 }
             });
 

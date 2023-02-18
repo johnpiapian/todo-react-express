@@ -6,11 +6,12 @@ function checkAuth(req, res, next) {
 
     if (token === null) return res.status(401).json({ message: 'Missing token' });
 
-    try {
-        const decoded = jwtUtil.verifyToken(token);
+    const decoded = jwtUtil.verifyToken(token);
+
+    if(decoded) {
         req.user = decoded;
         next();
-    } catch (error) {
+    } else {
         return res.status(401).json({ message: 'Invalid token' });
     }
 }
