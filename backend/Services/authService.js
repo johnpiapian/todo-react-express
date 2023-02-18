@@ -7,7 +7,9 @@ function authenticate(email, password) {
         .then(async (user) => {
             let passwordVerified = await bcryptUtil.comparePassword(password, user.password);
             if (user && passwordVerified) {
-                return jwtUtil.generateToken(user);
+                let { userId, name, email } = user;
+
+                return jwtUtil.generateToken({ userId, name, email });
             } else {
                 throw new Error('Invalid email or password');
             }

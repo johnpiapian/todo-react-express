@@ -1,4 +1,4 @@
-const userService = require('../Services/authService');
+const authService = require('../Services/authService');
 
 function login(req, res) {
     // get the user details from the request body
@@ -12,7 +12,7 @@ function login(req, res) {
     email = email.trim();
     password = password.trim();
 
-    userService.authenticate(email, password)
+    authService.authenticate(email, password)
         .then((token) => {
             return res.status(200).json({ token });
         })
@@ -33,7 +33,7 @@ function signup(req, res) {
     email = email.trim();
     password = password.trim();
 
-    userService.signup(name, email, password)
+    authService.signup(name, email, password)
         .then((userId) => {
             return res.status(200).json({ userId });
         })
