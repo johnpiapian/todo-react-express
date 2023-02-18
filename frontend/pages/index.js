@@ -33,28 +33,53 @@ export default function Home() {
         document.cookie = `${name}=${value}${expires}; path=/`;
     }
 
+    const toggleCompleteTask = (todoId, type) => {
+        setTodos(prevTodos => {
+            const newTodos = [...prevTodos];
+            let todoToUpdate = newTodos.find(todo => todo.todoId === todoId);
+            if (todoToUpdate) todoToUpdate.completed = type;
+            return newTodos;
+        });
+    }
+
+    const deleteTask = (todoId) => {
+        setTodos(prevTodos => prevTodos.filter(todo => todo.todoId !== todoId));
+    }
+
+    const addTask = (taskName) => {
+        let lastTodoId = todos[todos.length - 1].todoId;
+        let newTodo = { todoId: lastTodoId + 1, name: taskName, completed: 0 };
+
+        setTodos([...todos, newTodo]);
+    }
+
     // Event Handlers
-    const closeInstruction = () => {
+    const closeInstructionClicked = () => {
         setCookie('hideInstruction', true, 7);
         setHideInstruction(true);
     }
 
-    const addTask = () => {
-        if (inputTask) console.log(inputTask);
+    const addTaskClicked = () => {
+        if (inputTask) addTask(inputTask);
         setInputTask('');
-        console.log(todos);
+    }
+    
+    const inputTaskKeyPressed = (e) => {
+        if(e.key === 'Enter') {
+            if (inputTask) addTask(inputTask);
+            setInputTask('');
+        }
     }
 
-    const completeTask = (e) => {
-        console.log(e);
-    }
-
-    const uncompleteTask = (e) => {
-        console.log(e);
+    const taskClicked = (e, todoId, type) => {
+        if(e.shiftKey) {
+            deleteTask(todoId);
+        } else {
+            toggleCompleteTask(todoId, type);
+        }
     }
 
     useEffect(() => {
-        // Check if the token is stored in a cookie
         const storedToken = getCookie('token');
         const storedHideInstruction = getCookie('hideInstruction');
 
@@ -84,16 +109,15 @@ export default function Home() {
                     router.push('/login');
                 });
         } else {
-            // Cookie does not exist
             router.push('/login');
+            return;
         }
 
         setLoading(false);
     }, []);
 
-    if (loading) {
-        return <div>Loading...</div>;
-    }
+    
+    if (loading) return <div>Loading...</div>;
 
     return (
         <>
@@ -106,7 +130,7 @@ export default function Home() {
             <main className={styles.main}>
                 <div className={styles.todoApp}>
                     <div className={`${styles.instruction} ${hideInstruction ? styles.hidden : ""}`}>
-                        <span className={styles.close} onClick={closeInstruction}>X</span>
+                        <span className={styles.close} onClick={closeInstructionClicked}>X</span>
                         <article>
                             <h2>Instructions</h2>
                             <p>Click add or press Enter to create a new task.</p>
@@ -116,15 +140,15 @@ export default function Home() {
                     </div>
                     <div className={styles.todoContainer}>
                         <section className={styles.inputContainer}>
-                            <input className={styles.inputTask} type="text" placeholder="Add new task.." value={inputTask}
-                                onChange={(e) => setInputTask(e.target.value)} />
-                            <button className={styles.addTask} onClick={addTask}>Add</button>
+                            <input className={styles.inputTask} type="text" placeholder="Add new task..." value={inputTask}
+                                onChange={(e) => setInputTask(e.target.value)} onKeyUp={inputTaskKeyPressed} />
+                            <button className={styles.addTask} onClick={addTaskClicked}>Add</button>
                         </section>
                         <section className={`${styles.listContainer} ${styles.noselect}`}>
                             <ul className={styles.activeList}>
                                 {todos && todos.map(todo => {
                                     if (todo.completed === 0) {
-                                        return <li onClick={() => completeTask(todo.todoId)} key={todo.todoId}>{todo.name}</li>
+                                        return <li onClick={(e) => taskClicked(e, todo.todoId, 1)} key={todo.todoId}>{todo.name}</li>
                                     }
                                 })}
                             </ul>
@@ -132,7 +156,7 @@ export default function Home() {
                             <ul className={styles.completedList}>
                                 {todos && todos.map(todo => {
                                     if (todo.completed === 1) {
-                                        return <li onClick={() => uncompleteTask(todo.todoIdu)} key={todo.todoId}>{todo.name}</li>
+                                        return <li onClick={(e) => taskClicked(e, todo.todoId, 0)} key={todo.todoId}>{todo.name}</li>
                                     }
                                 })}
                             </ul>
