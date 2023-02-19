@@ -24,7 +24,7 @@ function createTodo(req, res) {
 
     todoService.create({ userId, name, completed: 0, deleted: 0 })
         .then((result) => {
-            return res.status(200).json({ result });
+            return res.status(200).json({ todoId: result });
         })
         .catch((err) => {
             return res.status(401).json({ error: err.message });
@@ -37,7 +37,7 @@ function completeTodo(req, res) {
 
     todoService.completeTodo(userId, todoId, 1)
         .then((result) => {
-            return res.status(200).json({ result });
+            return res.status(200).json({ todoId: result });
         })
         .catch((err) => {
             return res.status(401).json({ error: err.message });
@@ -50,7 +50,7 @@ function uncompleteTodo(req, res) {
     
     todoService.completeTodo(userId, todoId, 0)
         .then((result) => {
-            return res.status(200).json({ result });
+            return res.status(200).json({ todoId: result });
         })
         .catch((err) => {
             return res.status(401).json({ error: err.message });
@@ -63,7 +63,7 @@ function deleteTodo(req, res) {
 
     todoService.deleteTodo(userId, todoId)
         .then((result) => {
-            return res.status(200).json({ result });
+            return res.status(200).json({ todoId: result });
         })
         .catch((err) => {
             return res.status(401).json({ error: err.message });

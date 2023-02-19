@@ -64,7 +64,7 @@ function update(todo) {
             } else if (this.changes === 0) {
                 reject(new Error('Todo not found'));
             } else if (this.changes === 1) {
-                resolve(this.lastID);
+                resolve(todo.todoId);
             } else {
                 resolve(null);
             }

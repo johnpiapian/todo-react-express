@@ -7,14 +7,95 @@ import styles from '@/styles/Home.module.css';
 export default function Home() {
     const router = useRouter();
     const [loading, setLoading] = useState(true);
-
     // Cookie related
     const [token, setToken] = useState('');
     const [hideInstruction, setHideInstruction] = useState(false);
-
     // App related
-    const [todos, setTodos] = useState([]);
+    const [todos, setTodos] = useState();
     const [inputTask, setInputTask] = useState('');
+
+    // API calls
+    const getTodos = async (token) => {
+        try {
+            const response = await fetch('http://localhost:3000/todo/', {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            });
+
+            const data = await response.json();
+
+            if (response.ok) return data.todos;
+            else throw new Error(data.error);
+        } catch (error) {
+            console.error('Error fetching todos:', error);
+            return null;
+        }
+    }
+    // TODO: add, complete, uncomplete, delete
+    const postTodo = async (token, todoName) => {
+        try {
+            const response = await fetch('http://localhost:3000/todo/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: `Bearer ${token}`
+                },
+                body: JSON.stringify({ name: todoName })
+            });
+
+            const data = await response.json();
+
+            if (response.ok) return data;
+            else throw new Error(data.error);
+        } catch (error) {
+            console.error(error);
+            return null;
+        }
+    }
+
+    const updateTodo = async (token, todoId, completed) => {
+        try {
+            let url = completed === 1 ? `http://localhost:3000/todo/${todoId}` : `http://localhost:3000/todo/u/${todoId}`;
+
+            const response = await fetch(url, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: `Bearer ${token}`
+                }
+            });
+
+            const data = await response.json();
+
+            if (response.ok) return data;
+            else throw new Error(data.error);
+        } catch (error) {
+            console.error(error);
+            return null;
+        }
+    }
+
+    const deleteTodo = async (token, todoId) => {
+        try {
+            const response = await fetch(`http://localhost:3000/todo/${todoId}`, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: `Bearer ${token}`
+                }
+            });
+
+            const data = await response.json();
+
+            if (response.ok) return data;
+            else throw new Error(data.error);
+        } catch (error) {
+            console.error(error);
+            return null;
+        }
+    }
+
 
     // Functions
     const getCookie = (name) => {
@@ -33,24 +114,41 @@ export default function Home() {
         document.cookie = `${name}=${value}${expires}; path=/`;
     }
 
-    const toggleCompleteTask = (todoId, type) => {
-        setTodos(prevTodos => {
-            const newTodos = [...prevTodos];
-            let todoToUpdate = newTodos.find(todo => todo.todoId === todoId);
-            if (todoToUpdate) todoToUpdate.completed = type;
-            return newTodos;
-        });
+    const addTask = async (taskName) => {
+        const addedTodo = await postTodo(token, taskName);
+
+        if(addedTodo != null) {
+            let addedTodoId = addedTodo.todoId;
+
+            setTodos((prevTodos) => {
+                const newTodo = { todoId: addedTodoId, name: taskName, completed: 0 };
+                return [...prevTodos, newTodo];
+            });
+        }
     }
 
-    const deleteTask = (todoId) => {
-        setTodos(prevTodos => prevTodos.filter(todo => todo.todoId !== todoId));
+    const toggleCompleteTask = async (todoId, type) => {
+        const updatedTodo = await updateTodo(token, todoId, type);
+
+        if (updatedTodo != null) {
+            let updatedTodoId = updatedTodo.todoId;
+
+            setTodos(prevTodos => {
+                const newTodos = [...prevTodos];
+                let todoToUpdate = newTodos.find(todo => todo.todoId == updatedTodoId);
+                if (todoToUpdate) todoToUpdate.completed = type;
+                return newTodos;
+            });
+        }
     }
 
-    const addTask = (taskName) => {
-        let lastTodoId = todos[todos.length - 1].todoId;
-        let newTodo = { todoId: lastTodoId + 1, name: taskName, completed: 0 };
-
-        setTodos([...todos, newTodo]);
+    const deleteTask = async (todoId) => {
+        const deletedTodo = await deleteTodo(token, todoId );
+        
+        if (deletedTodo != null) {
+            let deletedTodoId = deletedTodo.todoId;
+            setTodos(prevTodos => prevTodos.filter(todo => todo.todoId != deletedTodoId));
+        }
     }
 
     // Event Handlers
@@ -63,61 +161,63 @@ export default function Home() {
         if (inputTask) addTask(inputTask);
         setInputTask('');
     }
-    
+
     const inputTaskKeyPressed = (e) => {
-        if(e.key === 'Enter') {
+        if (e.key === 'Enter') {
             if (inputTask) addTask(inputTask);
             setInputTask('');
         }
     }
 
     const taskClicked = (e, todoId, type) => {
-        if(e.shiftKey) {
+        if (e.shiftKey) {
             deleteTask(todoId);
         } else {
             toggleCompleteTask(todoId, type);
         }
     }
 
+    // Pageload
     useEffect(() => {
         const storedToken = getCookie('token');
         const storedHideInstruction = getCookie('hideInstruction');
 
         if (storedHideInstruction) setHideInstruction(true);
 
-        if (storedToken) {
-            setToken(storedToken);
-
-            // Make a fetch request to the backend API
-            fetch('http://localhost:3000/todo/', {
-                headers: {
-                    Authorization: `Bearer ${storedToken}`
+        const checkToken = async () => {
+            if (storedToken) {
+                const todos = await getTodos(storedToken);
+                if (todos) {
+                    setTodos(todos);
+                    setToken(storedToken);
+                } else {
+                    router.push('/login'); // Invalid token
                 }
-            })
-                .then(res => {
-                    if (!res.ok) {
-                        throw new Error(`Login failed!`);
-                    }
-                    return res.json();
-                })
-                .then(data => {
-                    // Display the data
-                    // console.log(data);
-                    setTodos(data.todos);
-                })
-                .catch(err => {
-                    router.push('/login');
-                });
-        } else {
-            router.push('/login');
-            return;
-        }
+            } else {
+                router.push('/login'); // Token is not set
+            }
 
-        setLoading(false);
+            setLoading(false);
+        };
+
+        checkToken();
     }, []);
 
-    
-    if (loading) return <div>Loading...</div>;
+
+    if (loading) {
+        return (
+            <>
+                <Head>
+                    <title>Todo App</title>
+                    <meta name="description" content="This is my todo app" />
+                    <meta name="viewport" content="width=device-width, initial-scale=1" />
+                    <link rel="icon" href="/favicon.ico" />
+                </Head>
+                <main className={styles.main}>
+                    <div className={styles.loading}>Loading...</div>
+                </main>
+            </>);
+    }
 
     return (
         <>

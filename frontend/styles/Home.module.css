@@ -30,6 +30,10 @@
   background-color: #476d93;
 }
 
+.loading {
+    color: whitesmoke;
+}
+
 .todoApp {
     max-width: 500px;
     min-width: 400px;
