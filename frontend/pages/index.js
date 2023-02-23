@@ -3,6 +3,7 @@ import { useRouter } from 'next/router';
 import Head from 'next/head';
 import Image from 'next/image';
 import styles from '@/styles/Home.module.css';
+import MyMenu from '../components/menu';
 
 export default function Home() {
     const router = useRouter();
@@ -117,7 +118,7 @@ export default function Home() {
     const addTask = async (taskName) => {
         const addedTodo = await postTodo(token, taskName);
 
-        if(addedTodo != null) {
+        if (addedTodo != null) {
             let addedTodoId = addedTodo.todoId;
 
             setTodos((prevTodos) => {
@@ -143,8 +144,8 @@ export default function Home() {
     }
 
     const deleteTask = async (todoId) => {
-        const deletedTodo = await deleteTodo(token, todoId );
-        
+        const deletedTodo = await deleteTodo(token, todoId);
+
         if (deletedTodo != null) {
             let deletedTodoId = deletedTodo.todoId;
             setTodos(prevTodos => prevTodos.filter(todo => todo.todoId != deletedTodoId));
@@ -227,6 +228,7 @@ export default function Home() {
                 <meta name="viewport" content="width=device-width, initial-scale=1" />
                 <link rel="icon" href="/favicon.ico" />
             </Head>
+            <MyMenu />
             <main className={styles.main}>
                 <div className={styles.todoApp}>
                     <div className={`${styles.instruction} ${hideInstruction ? styles.hidden : ""}`}>
