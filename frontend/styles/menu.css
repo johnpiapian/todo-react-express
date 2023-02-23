@@ -66,6 +66,21 @@
     text-decoration: underline;
 }
 
+.bm-item.name {
+    color: wheat;
+    font-size: 1.2em;
+    font-weight: bold;
+}
+
+.bm-item.name i {
+    text-transform: capitalize;
+    font-style: normal;
+}
+
+.bm-item.name:hover {
+    text-decoration: none;
+}
+
 /* Styling of overlay */
 .bm-overlay {
     background: rgba(0, 0, 0, 0.3);

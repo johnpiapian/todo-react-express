@@ -14,6 +14,7 @@ export default function Home() {
     // App related
     const [todos, setTodos] = useState();
     const [inputTask, setInputTask] = useState('');
+    const [loggedUser, setLoggedUser] = useState({});
 
     // API calls
     const getTodos = async (token) => {
@@ -131,6 +132,13 @@ export default function Home() {
         }
     }
 
+    function parseJwt(token) {
+        if (!token) { return; }
+        const base64Url = token.split('.')[1];
+        const base64 = base64Url.replace('-', '+').replace('_', '/');
+        return JSON.parse(window.atob(base64));
+    }
+
     const toggleCompleteTask = async (todoId, type) => {
         const updatedTodo = await updateTodo(token, todoId, type);
 
@@ -186,6 +194,7 @@ export default function Home() {
         if (router.query.logout && router.query.logout == 1) {
             setToken('');
             deleteCookie('token');
+            setLoggedUser({});
             router.push('/login');
         }
     }, [router.query.logout]);
@@ -203,6 +212,7 @@ export default function Home() {
                 if (todos) {
                     setTodos(todos);
                     setToken(storedToken);
+                    setLoggedUser(parseJwt(storedToken));
                 } else {
                     router.push('/login'); // Invalid token
                 }
@@ -240,7 +250,7 @@ export default function Home() {
                 <meta name="viewport" content="width=device-width, initial-scale=1" />
                 <link rel="icon" href="/favicon.ico" />
             </Head>
-            <MyMenu />
+            <MyMenu user={loggedUser} />
             <main className={styles.main}>
                 <div className={styles.todoApp}>
                     <div className={`${styles.instruction} ${hideInstruction ? styles.hidden : ""}`}>
