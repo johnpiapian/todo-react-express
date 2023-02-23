@@ -97,7 +97,6 @@ export default function Home() {
         }
     }
 
-
     // Functions
     const getCookie = (name) => {
         const value = `; ${document.cookie}`;
@@ -113,6 +112,10 @@ export default function Home() {
             expires = `; expires=${date.toUTCString()}`;
         }
         document.cookie = `${name}=${value}${expires}; path=/`;
+    }
+
+    const deleteCookie = (name) => {
+        document.cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
     }
 
     const addTask = async (taskName) => {
@@ -177,6 +180,15 @@ export default function Home() {
             toggleCompleteTask(todoId, type);
         }
     }
+
+    // Logout
+    useEffect(() => {
+        if (router.query.logout && router.query.logout == 1) {
+            setToken('');
+            deleteCookie('token');
+            router.push('/login');
+        }
+    }, [router.query.logout]);
 
     // Pageload
     useEffect(() => {

@@ -4,7 +4,7 @@ const MyMenu = () => {
     return (
         <Menu right>
             <a id="home" className="menu-item" href="/">Home</a>
-            <a id="about" className="menu-item" href="/about">Logout</a>
+            <a id="about" className="menu-item" href="/?logout=1">Logout</a>
         </Menu>
     );
 }
