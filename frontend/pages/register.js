@@ -1,33 +1,35 @@
 import { useState } from 'react';
 import { useRouter } from 'next/router';
 import Head from 'next/head';
-import styles from '@/styles/LoginRegister.module.css';
 import Link from 'next/link';
+import styles from '@/styles/LoginRegister.module.css';
 
-export default function Login() {
+export default function Register() {
     const router = useRouter();
+    const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
-    const handleLogin = async () => {
-        if (email.length < 1 || password.length < 1) {
+    const handleRegister = async () => {
+        if (name.length < 1 || email.length < 1 || password.length < 1) {
             alert('Check input!');
             return;
         }
 
         // Make API call to login endpoint with email and password
-        fetch('http://localhost:3000/auth/login', {
+        fetch('http://localhost:3000/auth/signup', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ email, password })
+            body: JSON.stringify({ name, email, password })
         })
         .then(res => res.json())
         .then(data => {
             if(data.error) throw new Error(data.error);
-            // Maybe store the token
-            document.cookie = `token=${data.token}; path=/`;
-            // Redirect to a secure page (index)
-            router.push('/');
+            
+            // Successfully created account
+            if(confirm("Successfully registered! Want to login?")) {
+                router.push('/login');
+            }
         })
         .catch(error => {
             alert(error.message);
@@ -37,28 +39,32 @@ export default function Login() {
     return (
         <>
             <Head>
-                <title>Todo App | Login</title>
+                <title>Todo App | Register</title>
                 <meta name="description" content="This is my todo app" />
                 <meta name="viewport" content="width=device-width, initial-scale=1" />
                 <link rel="icon" href="" />
             </Head>
             <main className={styles.main}>
                 <div className={styles.loginContainer}>
-                    <h1>Login</h1>
+                    <h1>Register</h1>
                     <form onSubmit={(e) => e.preventDefault()}>
                         <div>
+                            <label htmlFor="name">Name: </label>
+                            <input id="name" type="text" value={name} onChange={(e) => setName(e.target.value)} required/>
+                        </div>
+                        <div>
                             <label htmlFor="email">Email: </label>
-                            <input id="email" type="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
+                            <input id="email" type="email" value={email} onChange={(e) => setEmail(e.target.value)} required/>
                         </div>
                         <div>
                             <label htmlFor="password">Password: </label>
-                            <input id="password" type="password" value={password} onChange={(e) => setPassword(e.target.value)} required />
+                            <input id="password" type="password" value={password} onChange={(e) => setPassword(e.target.value)} required/>
                         </div>
                         <div>
-                            <p>Don't have an account? <Link className={styles.linkBasic} href="/register">Register</Link></p>
+                            <p>Already have an account? <Link className={styles.linkBasic} href="/login">Login</Link></p>
                         </div>
                         <div>
-                            <button type="submit" onClick={handleLogin}>Login</button>
+                            <button type="submit" onClick={handleRegister}>Register</button>
                         </div>
                     </form>
                 </div>
