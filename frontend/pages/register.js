@@ -45,7 +45,7 @@ export default function Register() {
                 <link rel="icon" href="" />
             </Head>
             <main className={styles.main}>
-                <div className={styles.loginContainer}>
+                <div className={styles.formContainer}>
                     <h1>Register</h1>
                     <form onSubmit={(e) => e.preventDefault()}>
                         <div>

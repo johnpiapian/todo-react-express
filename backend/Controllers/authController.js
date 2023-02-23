@@ -17,7 +17,7 @@ function login(req, res) {
             return res.status(200).json({ token });
         })
         .catch((err) => {
-            return res.status(401).json({ error: err.message });
+            return res.status(401).json({ error: "Authentication failed!" });
         });
 }
 
@@ -38,7 +38,7 @@ function signup(req, res) {
             return res.status(200).json({ userId });
         })
         .catch((err) => {
-            return res.status(401).json({ error: err.message });
+            return res.status(401).json({ error: "Registration failed!" });
         });
 }
 

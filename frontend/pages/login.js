@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import { useRouter } from 'next/router';
 import Head from 'next/head';
-import styles from '@/styles/LoginRegister.module.css';
 import Link from 'next/link';
+import styles from '@/styles/LoginRegister.module.css';
 
 export default function Login() {
     const router = useRouter();
@@ -43,7 +43,7 @@ export default function Login() {
                 <link rel="icon" href="" />
             </Head>
             <main className={styles.main}>
-                <div className={styles.loginContainer}>
+                <div className={styles.formContainer}>
                     <h1>Login</h1>
                     <form onSubmit={(e) => e.preventDefault()}>
                         <div>
