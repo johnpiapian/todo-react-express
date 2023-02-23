@@ -1,7 +1,8 @@
 import { useState } from 'react';
 import { useRouter } from 'next/router';
 import Head from 'next/head';
-import styles from '@/styles/Login.module.css';
+import styles from '@/styles/LoginRegister.module.css';
+import Link from 'next/link';
 
 export default function Login() {
     const router = useRouter();
@@ -10,7 +11,7 @@ export default function Login() {
 
     const handleLogin = async () => {
         if (email.length < 1 || password.length < 1) {
-            alert('Check input!s');
+            alert('Check input!');
             return;
         }
 
@@ -23,8 +24,7 @@ export default function Login() {
         .then(res => res.json())
         .then(data => {
             if(data.error) {
-                alert(data.error);
-                return;
+                throw new Error(data.error);
             }
             // Maybe store the token
             document.cookie = `token=${data.token}; path=/`;
@@ -32,7 +32,7 @@ export default function Login() {
             router.push('/');
         })
         .catch(error => {
-            console.error('Error:', error);
+            alert(error.message);
         });
     };
 
@@ -55,6 +55,9 @@ export default function Login() {
                         <div>
                             <label htmlFor="password">Password: </label>
                             <input id="password" type="password" value={password} onChange={(e) => setPassword(e.target.value)} required />
+                        </div>
+                        <div>
+                            <p>Don't have an account? <Link className={styles.linkBasic} href="/register">Register</Link></p>
                         </div>
                         <div>
                             <button type="submit" onClick={handleLogin}>Login</button>
