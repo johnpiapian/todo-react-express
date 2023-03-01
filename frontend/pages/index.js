@@ -8,7 +8,7 @@ import MyMenu from '../components/menu';
 export default function Home() {
     const router = useRouter();
     const [loading, setLoading] = useState(true);
-    // Cookie related
+    // Storage related
     const [token, setToken] = useState('');
     const [hideInstruction, setHideInstruction] = useState(false);
     // App related
@@ -99,26 +99,6 @@ export default function Home() {
     }
 
     // Functions
-    const getCookie = (name) => {
-        const value = `; ${document.cookie}`;
-        const parts = value.split(`; ${name}=`);
-        if (parts.length === 2) return parts.pop().split(';').shift();
-    }
-
-    const setCookie = (name, value, days) => {
-        let expires = '';
-        if (days) {
-            const date = new Date();
-            date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
-            expires = `; expires=${date.toUTCString()}`;
-        }
-        document.cookie = `${name}=${value}${expires}; path=/`;
-    }
-
-    const deleteCookie = (name) => {
-        document.cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
-    }
-
     const addTask = async (taskName) => {
         const addedTodo = await postTodo(token, taskName);
 
@@ -165,7 +145,8 @@ export default function Home() {
 
     // Event Handlers
     const closeInstructionClicked = () => {
-        setCookie('hideInstruction', true, 7);
+        // setCookie('hideInstruction', true, 7);
+        localStorage.setItem('hideInstruction', true);
         setHideInstruction(true);
     }
 
@@ -193,31 +174,33 @@ export default function Home() {
     useEffect(() => {
         if (router.query.logout && router.query.logout == 1) {
             setToken('');
-            deleteCookie('token');
             setLoggedUser({});
+            localStorage.removeItem('token');
+            localStorage.removeItem('hideInstruction');
             router.push('/login');
         }
     }, [router.query.logout]);
 
     // Pageload
     useEffect(() => {
-        const storedToken = getCookie('token');
-        const storedHideInstruction = getCookie('hideInstruction');
+        const storedToken = localStorage.getItem('token');
+        const storedHideInstruction = localStorage.getItem('hideInstruction');
 
         if (storedHideInstruction) setHideInstruction(true);
 
         const checkToken = async () => {
             if (storedToken) {
-                const todos = await getTodos(storedToken);
+                // api call to get todos/validate storedToken
+                const todos = await getTodos(storedToken); 
                 if (todos) {
                     setTodos(todos);
                     setToken(storedToken);
                     setLoggedUser(parseJwt(storedToken));
                 } else {
-                    router.push('/login'); // Invalid token
+                    router.push('/login'); // invalid token
                 }
             } else {
-                router.push('/login'); // Token is not set
+                router.push('/login'); // token is not set
             }
 
             setLoading(false);

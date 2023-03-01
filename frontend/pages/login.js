@@ -24,8 +24,8 @@ export default function Login() {
         .then(res => res.json())
         .then(data => {
             if(data.error) throw new Error(data.error);
-            // Maybe store the token
-            document.cookie = `token=${data.token}; path=/`;
+            // Store the token
+            localStorage.setItem('token', data.token);
             // Redirect to a secure page (index)
             router.push('/');
         })
