@@ -62,7 +62,7 @@ export default function Login() {
                             <input id="password" type="password" value={password} onChange={(e) => setPassword(e.target.value)} required />
                         </div>
                         <div>
-                            <p>Don't have an account? <Link className={styles.linkBasic} href="/register">Register</Link></p>
+                            <p>{`Don't have an account?`} <Link className={styles.linkBasic} href="/register">Register</Link></p>
                         </div>
                         <div>
                             <button type="submit" onClick={handleLogin}>Login</button>
