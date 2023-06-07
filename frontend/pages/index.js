@@ -33,6 +33,7 @@ export default function Home() {
             return null;
         }
     }
+    
     // TODO: add, complete, uncomplete, delete
     const postTodo = async (token, todoName) => {
         try {
@@ -190,7 +191,7 @@ export default function Home() {
         const checkToken = async () => {
             if (storedToken) {
                 // api call to get todos/validate storedToken
-                const todos = await getTodos(storedToken); 
+                const todos = await getTodos(storedToken);
                 if (todos) {
                     setTodos(todos);
                     setToken(storedToken);
@@ -216,7 +217,8 @@ export default function Home() {
                 <main className={styles.main}>
                     <div className={styles.loading}>Loading...</div>
                 </main>
-            </>);
+            </>
+        );
     }
 
     return (
@@ -261,5 +263,5 @@ export default function Home() {
                 </div>
             </main>
         </>
-    )
+    );
 }
