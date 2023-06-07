@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import { useRouter } from 'next/router';
-import Head from 'next/head';
 import Link from 'next/link';
 import styles from '@/styles/LoginRegister.module.css';
+import Header from '../components/header';
 
 export default function Login() {
     const router = useRouter();
@@ -36,12 +36,7 @@ export default function Login() {
 
     return (
         <>
-            <Head>
-                <title>Todo App | Login</title>
-                <meta name="description" content="This is my todo app" />
-                <meta name="viewport" content="width=device-width, initial-scale=1" />
-                <link rel="icon" href="" />
-            </Head>
+            <Header title={"Todo App | Login"} />
             <main className={styles.main}>
                 <div className={styles.formContainer}>
                     <h1>Login</h1>
