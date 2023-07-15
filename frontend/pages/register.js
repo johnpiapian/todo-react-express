@@ -1,18 +1,29 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
-import Head from 'next/head';
 import Link from 'next/link';
 import styles from '@/styles/LoginRegister.module.css';
+import Header from '../components/header';
 
 export default function Register() {
     const router = useRouter();
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [error, setError] = useState(undefined);
 
-    const handleRegister = async () => {
+    // Hide error message after 3 seconds
+    useEffect(() => {
+        if(!error) return;
+        setTimeout(() => {
+            setError(undefined);
+        }, 3000);
+    }, [error]);
+
+    const handleRegister = async (e) => {
+        e.preventDefault();
+
         if (name.length < 1 || email.length < 1 || password.length < 1) {
-            alert('Check input!');
+            setError('Check input!');
             return;
         }
 
@@ -32,22 +43,18 @@ export default function Register() {
             }
         })
         .catch(error => {
-            alert(error.message);
+            setError(error.message);
         });
     };
 
     return (
         <>
-            <Head>
-                <title>Todo App | Register</title>
-                <meta name="description" content="This is my todo app" />
-                <meta name="viewport" content="width=device-width, initial-scale=1" />
-                <link rel="icon" href="" />
-            </Head>
+            <Header title={"Todo App | Register"}/>
             <main className={styles.main}>
                 <div className={styles.formContainer}>
                     <h1>Register</h1>
-                    <form onSubmit={(e) => e.preventDefault()}>
+                    <form>
+                        {error && <p className='errorMessage'>{error}</p>}
                         <div>
                             <label htmlFor="name">Name: </label>
                             <input id="name" type="text" value={name} onChange={(e) => setName(e.target.value)} required/>

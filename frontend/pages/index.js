@@ -1,9 +1,8 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
-import Head from 'next/head';
-import Image from 'next/image';
 import styles from '@/styles/Home.module.css';
 import MyMenu from '../components/menu';
+import Header from '../components/header';
 
 export default function Home() {
     const router = useRouter();
@@ -34,6 +33,7 @@ export default function Home() {
             return null;
         }
     }
+    
     // TODO: add, complete, uncomplete, delete
     const postTodo = async (token, todoName) => {
         try {
@@ -191,7 +191,7 @@ export default function Home() {
         const checkToken = async () => {
             if (storedToken) {
                 // api call to get todos/validate storedToken
-                const todos = await getTodos(storedToken); 
+                const todos = await getTodos(storedToken);
                 if (todos) {
                     setTodos(todos);
                     setToken(storedToken);
@@ -213,26 +213,17 @@ export default function Home() {
     if (loading) {
         return (
             <>
-                <Head>
-                    <title>Todo App</title>
-                    <meta name="description" content="This is my todo app" />
-                    <meta name="viewport" content="width=device-width, initial-scale=1" />
-                    <link rel="icon" href="/favicon.ico" />
-                </Head>
+                <Header description={"Welcome to my description"} />
                 <main className={styles.main}>
                     <div className={styles.loading}>Loading...</div>
                 </main>
-            </>);
+            </>
+        );
     }
 
     return (
         <>
-            <Head>
-                <title>Todo App</title>
-                <meta name="description" content="This is my todo app" />
-                <meta name="viewport" content="width=device-width, initial-scale=1" />
-                <link rel="icon" href="/favicon.ico" />
-            </Head>
+            <Header />
             <MyMenu user={loggedUser} />
             <main className={styles.main}>
                 <div className={styles.todoApp}>
@@ -272,5 +263,5 @@ export default function Home() {
                 </div>
             </main>
         </>
-    )
+    );
 }

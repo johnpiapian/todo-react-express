@@ -1,17 +1,28 @@
-import { useState } from 'react';
+import { use, useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
-import Head from 'next/head';
 import Link from 'next/link';
 import styles from '@/styles/LoginRegister.module.css';
+import Header from '../components/header';
 
 export default function Login() {
     const router = useRouter();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [error, setError] = useState(undefined);
 
-    const handleLogin = async () => {
+    // Hide error message after 3 seconds
+    useEffect(() => {
+        if(!error) return;
+        setTimeout(() => {
+            setError(undefined);
+        }, 3000);
+    }, [error]);
+
+    const handleLogin = async (e) => {
+        e.preventDefault();
+
         if (email.length < 1 || password.length < 1) {
-            alert('Check input!');
+            setError('Check input!');
             return;
         }
 
@@ -30,22 +41,18 @@ export default function Login() {
             router.push('/');
         })
         .catch(error => {
-            alert(error.message);
+            setError(error.message);
         });
     };
 
     return (
         <>
-            <Head>
-                <title>Todo App | Login</title>
-                <meta name="description" content="This is my todo app" />
-                <meta name="viewport" content="width=device-width, initial-scale=1" />
-                <link rel="icon" href="" />
-            </Head>
+            <Header title={"Todo App | Login"} />
             <main className={styles.main}>
                 <div className={styles.formContainer}>
                     <h1>Login</h1>
-                    <form onSubmit={(e) => e.preventDefault()}>
+                    <form>
+                        {error && <p className='errorMessage'>{error}</p>}
                         <div>
                             <label htmlFor="email">Email: </label>
                             <input id="email" type="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
@@ -55,7 +62,7 @@ export default function Login() {
                             <input id="password" type="password" value={password} onChange={(e) => setPassword(e.target.value)} required />
                         </div>
                         <div>
-                            <p>Don't have an account? <Link className={styles.linkBasic} href="/register">Register</Link></p>
+                            <p>{`Don't have an account?`} <Link className={styles.linkBasic} href="/register">Register</Link></p>
                         </div>
                         <div>
                             <button type="submit" onClick={handleLogin}>Login</button>
