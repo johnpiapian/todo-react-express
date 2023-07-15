@@ -1,9 +1,9 @@
 {
     "scripts": {
         "start": "concurrently 'cd frontend && npm run build && npm run start' 'cd backend && npm run start'",
+        "start-prod": "concurrently 'cd frontend && npm run build && npm run start --  -p 8080' 'cd backend && npm run start'",
         "dev": "concurrently 'cd frontend && npm run dev' 'cd backend && npm run dev'",
         "build": "cd backend && npm install && cd ../frontend && npm install",
-        "start-prod": "concurrently 'cd frontend && npm run build && npm run start --  -p 8080' 'cd backend && npm run start'",
         "prod": "npm run build && npm run start-prod"
     },
     "dependencies": {
