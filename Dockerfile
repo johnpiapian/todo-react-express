@@ -8,5 +8,5 @@ COPY . .
 RUN npm install
 CMD npm run prod
 
-# front-end port
+# port
 EXPOSE 3000-8080
