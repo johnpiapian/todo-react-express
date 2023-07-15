@@ -10,6 +10,7 @@ Database: Sqlite <br/>
 Others: Jwt, Bcrypt <br/>
 
 ## Frontend
-The frontend for this project was built using React, which is a popular and powerful JavaScript library for building user interfaces. React is known for its speed, scalability, and flexibility, making it a great choice for developing complex and interactive applications.
+The frontend for this project utilizes React, a powerful JavaScript library known for its speed, scalability, and flexibility. React is combined with Next.js, a framework that adds features like server-side rendering and routing. This combination offers a powerful toolkit for building complex and interactive applications with enhanced performance and SEO capabilities.
 
-Framework: React
+Library: React
+Framework: Nextjs
