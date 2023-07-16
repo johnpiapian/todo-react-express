@@ -12,7 +12,7 @@ Security: Jwt, Bcrypt <br/>
 ## Frontend
 The frontend for this project utilizes React, a powerful JavaScript library known for its speed, scalability, and flexibility. React is combined with Next.js, a framework that adds features like server-side rendering and routing. This combination offers a powerful toolkit for building complex and interactive applications with enhanced performance and SEO capabilities.
 
-Library: React
+Library: React <br/>
 Framework: Nextjs
 
 ## Docker
@@ -32,7 +32,3 @@ npm run build && npm run dev
 ```
 
 The command `npm run build` is only necessary during the initial setup to install the dependencies for both projects. If you have already completed this step, you can simply run `npm run dev`. For further details, please refer to the package.json file.
-
-
-
-
