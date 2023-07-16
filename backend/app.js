@@ -5,7 +5,8 @@ const bodyParser = require('body-parser');
 const authRoute = require('./Routes/authRoute');
 const todoRoute = require('./Routes/todoRoute');
 const { checkAuth } = require('./Config/auth');
-const port = 3000;
+const { getPortFromFlag } = require('./Utils/Base');
+const port = getPortFromFlag() || 3000;
 
 app.use(cors());
 
