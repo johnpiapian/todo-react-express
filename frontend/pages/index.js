@@ -3,6 +3,7 @@ import { useRouter } from 'next/router';
 import styles from '@/styles/Home.module.css';
 import MyMenu from '../components/menu';
 import Header from '../components/header';
+import { API_URL } from '@/utils/config';
 
 export default function Home() {
     const router = useRouter();
@@ -18,7 +19,7 @@ export default function Home() {
     // API calls
     const getTodos = async (token) => {
         try {
-            const response = await fetch('http://localhost:3000/todo/', {
+            const response = await fetch(`${API_URL()}/todo/`, {
                 headers: {
                     Authorization: `Bearer ${token}`
                 }
@@ -37,7 +38,7 @@ export default function Home() {
     // TODO: add, complete, uncomplete, delete
     const postTodo = async (token, todoName) => {
         try {
-            const response = await fetch('http://localhost:3000/todo/', {
+            const response = await fetch(`${API_URL()}/todo/`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -58,7 +59,7 @@ export default function Home() {
 
     const updateTodo = async (token, todoId, completed) => {
         try {
-            let url = completed === 1 ? `http://localhost:3000/todo/${todoId}` : `http://localhost:3000/todo/u/${todoId}`;
+            let url = completed === 1 ? `${API_URL()}/todo/${todoId}` : `${API_URL()}/todo/u/${todoId}`;
 
             const response = await fetch(url, {
                 method: 'PUT',
@@ -80,7 +81,7 @@ export default function Home() {
 
     const deleteTodo = async (token, todoId) => {
         try {
-            const response = await fetch(`http://localhost:3000/todo/${todoId}`, {
+            const response = await fetch(`${API_URL()}/todo/${todoId}`, {
                 method: 'DELETE',
                 headers: {
                     'Content-Type': 'application/json',

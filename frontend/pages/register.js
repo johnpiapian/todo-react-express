@@ -3,6 +3,7 @@ import { useRouter } from 'next/router';
 import Link from 'next/link';
 import styles from '@/styles/LoginRegister.module.css';
 import Header from '../components/header';
+import { API_URL } from '@/utils/config';
 
 export default function Register() {
     const router = useRouter();
@@ -28,7 +29,7 @@ export default function Register() {
         }
 
         // Make API call to login endpoint with email and password
-        fetch('http://localhost:3000/auth/signup', {
+        fetch(`${API_URL()}/auth/signup`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ name, email, password })
