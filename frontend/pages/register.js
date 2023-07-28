@@ -3,7 +3,7 @@ import { useRouter } from 'next/router';
 import Link from 'next/link';
 import styles from '@/styles/LoginRegister.module.css';
 import Header from '../components/header';
-import { API_URL } from '@/utils/config';
+import { API_URL } from '@/config';
 
 export default function Register() {
     const router = useRouter();
