@@ -6,9 +6,9 @@
         "build": "cd backend && npm install && cd ../frontend && npm install",
         "production": "npm run build && npm run start:dev",
         "docker:desktop": "open -a Docker",
-        "docker:delete": "docker system prune -a",
         "docker:start": "docker-compose up --build -d",
-        "docker:stop": "docker-compose down"
+        "docker:stop": "docker-compose down",
+        "docker:delete": "docker-compose down --rmi all --volumes --remove-orphans"
     },
     "dependencies": {
         "concurrently": "^8.2.0"
