@@ -1,5 +1,4 @@
 const express = require('express');
-const authController = require('../Controllers/authController');
 const router = express.Router();
 const authService = require('../Services/authService');
 
@@ -48,6 +47,8 @@ router.post('/signup', (req, res) => {
 });
 
 // POST: /auth/resetPassword
-// router.post('/resetPassword', authController.resetPassword);
+router.post('/resetPassword', (req, res) => {
+    res.send('Reset password');
+});
 
 module.exports = router;
