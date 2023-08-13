@@ -34,11 +34,30 @@ function forgotPassword(email) {
     return userService.findByEmail(email)
         .then((user) => {   
             if (user) {
-                return jwtUtil.generateToken({ email });
+                return jwtUtil.generateToken({ userId: user.userId, email: user.email, type: 'reset' }, '10m');
             } else {
                 throw new Error('Invalid email');
             }
         });
 }
 
-module.exports = { authenticate, signup, forgotPassword }
+function resetPassword(email, password) {
+    return userService.findByEmail(email)
+        .then(async (user) => {
+            if (user) {
+                password = await bcryptUtil.hashPassword(password);
+
+                userToUpdate = {
+                    name: user.name,
+                    email: user.email,
+                    password: password
+                }
+
+                return userService.updateByUserId(user.userId, userToUpdate);
+            } else {
+                throw new Error('Invalid email');
+            }
+        });
+}
+
+module.exports = { authenticate, signup, forgotPassword, resetPassword }

@@ -60,4 +60,17 @@ function updateByEmail(email, user) {
     });
 }
 
-module.exports = { create, find, findByEmail, updateByEmail}
+function updateByUserId(userId, user) {
+    return new Promise((resolve, reject) => {
+        const query = 'UPDATE users SET name = ?, email = ?, password = ? WHERE userId = ?';
+        db.run(query, [user.name, user.email, user.password, userId], function (err) {
+            if (err) {
+                reject(err);
+            } else {
+                resolve(this.changes);
+            }
+        });
+    });
+}
+
+module.exports = { create, find, findByEmail, updateByEmail, updateByUserId}

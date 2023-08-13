@@ -22,4 +22,8 @@ function updateByEmail(email, user) {
     return User.updateByEmail(email, user);
 }
 
-module.exports = { create, findByEmail, findById, updateByEmail }
+function updateByUserId(userId, user) {
+    return User.updateByUserId(userId, user);
+}
+
+module.exports = { create, findByEmail, findById, updateByEmail, updateByUserId }
