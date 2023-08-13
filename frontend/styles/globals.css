@@ -95,3 +95,8 @@ a {
     color: red;
     padding: 10px 0;
 }
+
+.successMessage {
+    color: green;
+    padding: 10px 0;
+}

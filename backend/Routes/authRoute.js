@@ -56,8 +56,7 @@ router.post('/forgotPassword', (req, res) => {
     authService.forgotPassword(email)
         .then((token) => {
             // TODO: Send email with link to reset password
-            const link = `http://localhost:3000/auth/resetPassword?token=${token}`;
-            return res.status(200).json({ link });
+            return res.status(200).json({ token });
         })
         .catch((err) => {
             return res.status(401).json({ error: "An error occured resetting password" });
