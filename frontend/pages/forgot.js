@@ -5,41 +5,42 @@ import styles from '@/styles/Auth.module.css';
 import Header from '../components/header';
 import { API_URL } from '@/config/base';
 
-export default function Login() {
+export default function Forgot() {
     const router = useRouter();
     const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
     const [error, setError] = useState(undefined);
+    const [success, setSuccess] = useState(undefined);
 
-    // Hide error message after x seconds
+    // Hide error message after 3 seconds
     useEffect(() => {
         if(!error) return;
         setTimeout(() => {
             setError(undefined);
-        }, 5000);
+        }, 3000);
     }, [error]);
 
-    const handleLogin = async (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
 
-        if (email.length < 1 || password.length < 1) {
+        if (email.length < 1) {
             setError('Required field(s) missing!');
             return;
         }
 
-        // Make API call to login endpoint with email and password
-        fetch(`${API_URL()}/auth/login`, {
+        // Make API call to reset endpoint with email
+        fetch(`${API_URL()}/auth/forgotPassword`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ email, password })
+            body: JSON.stringify({ email })
         })
         .then(res => res.json())
         .then(data => {
             if(data.error) throw new Error(data.error);
-            // Store the token
-            localStorage.setItem('token', data.token);
-            // Redirect to a secure page (index)
-            router.push('/');
+            
+            console.log(`http://${window.location.host}/reset?token=${data.token}`); // link sent to email
+            
+            setSuccess('Check your email for a reset link!'); // Show success message
+            setEmail(''); // Clear email field
         })
         .catch(error => {
             setError(error.message);
@@ -48,30 +49,22 @@ export default function Login() {
 
     return (
         <>
-            <Header title={"Todo App | Login"} />
+            <Header title={"Todo App | Forgot Password"} />
             <main className={styles.main}>
                 <div className={styles.formContainer}>
-                    <h1>Login</h1>
+                    <h1>Forgot Password</h1>
                     <form>
                         {error && <p className='errorMessage'>{error}</p>}
+                        {success && <p className='successMessage'>{success}</p>}
                         <div>
                             <label htmlFor="email">Email: </label>
                             <input id="email" type="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
                         </div>
                         <div>
-                            <label htmlFor="password">Password: </label>
-                            <input id="password" type="password" value={password} onChange={(e) => setPassword(e.target.value)} required />
+                            <p>Or go back to <Link className={styles.linkBasic} href="/login">login</Link></p>
                         </div>
                         <div>
-                            <p>
-                                {`Don't have an account? `}<Link className={styles.linkBasic} href="/register">Register</Link>
-                            </p>
-                            <p>
-                                Forgot password? <Link className={styles.linkBasic} href="/forgot">Reset</Link>
-                            </p>
-                        </div>
-                        <div>
-                            <button type="submit" onClick={handleLogin}>Login</button>
+                            <button type="submit" onClick={handleSubmit}>Reset</button>
                         </div>
                     </form>
                 </div>

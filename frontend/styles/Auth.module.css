@@ -3,13 +3,13 @@
 }
 
 .main {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  align-items: center;
-  padding: 6rem;
-  min-height: 100vh;
-  background-color: #476d93;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    padding: 6rem;
+    min-height: 100vh;
+    background-color: #476d93;
 }
 
 .formContainer {
@@ -26,7 +26,7 @@
     /* border: 1px solid black; */
 }
 
-.formContainer form > div {
+.formContainer form>div {
     padding: 5px 0;
 }
 

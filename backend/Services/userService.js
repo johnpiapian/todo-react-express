@@ -16,4 +16,14 @@ function findByEmail(email) {
     return User.findByEmail(email);
 }
 
-module.exports = { create, findByEmail, findById }
+function updateByEmail(email, user) {
+    // make email case-insensitive
+    email = email.toLowerCase();
+    return User.updateByEmail(email, user);
+}
+
+function updateByUserId(userId, user) {
+    return User.updateByUserId(userId, user);
+}
+
+module.exports = { create, findByEmail, findById, updateByEmail, updateByUserId }

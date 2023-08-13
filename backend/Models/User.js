@@ -47,4 +47,30 @@ function findByEmail(email) {
     });
 }
 
-module.exports = { create, find, findByEmail}
+function updateByEmail(email, user) {
+    return new Promise((resolve, reject) => {
+        const query = 'UPDATE users SET name = ?, email = ?, password = ? WHERE email = ?';
+        db.run(query, [user.name, user.email, user.password, email], function (err) {
+            if (err) {
+                reject(err);
+            } else {
+                resolve(this.changes);
+            }
+        });
+    });
+}
+
+function updateByUserId(userId, user) {
+    return new Promise((resolve, reject) => {
+        const query = 'UPDATE users SET name = ?, email = ?, password = ? WHERE userId = ?';
+        db.run(query, [user.name, user.email, user.password, userId], function (err) {
+            if (err) {
+                reject(err);
+            } else {
+                resolve(this.changes);
+            }
+        });
+    });
+}
+
+module.exports = { create, find, findByEmail, updateByEmail, updateByUserId}

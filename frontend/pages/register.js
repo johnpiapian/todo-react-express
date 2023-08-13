@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
-import styles from '@/styles/LoginRegister.module.css';
+import styles from '@/styles/Auth.module.css';
 import Header from '../components/header';
 import { API_URL } from '@/config/base';
 
@@ -12,19 +12,19 @@ export default function Register() {
     const [password, setPassword] = useState('');
     const [error, setError] = useState(undefined);
 
-    // Hide error message after 3 seconds
+    // Hide error message after x seconds
     useEffect(() => {
         if(!error) return;
         setTimeout(() => {
             setError(undefined);
-        }, 3000);
+        }, 5000);
     }, [error]);
 
     const handleRegister = async (e) => {
         e.preventDefault();
 
         if (name.length < 1 || email.length < 1 || password.length < 1) {
-            setError('Check input!');
+            setError('Required field(s) missing!');
             return;
         }
 
