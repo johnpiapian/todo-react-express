@@ -46,9 +46,24 @@ router.post('/signup', (req, res) => {
         });
 });
 
-// POST: /auth/resetPassword
-router.post('/resetPassword', (req, res) => {
-    res.send('Reset password');
+// POST: /auth/forgotPassword
+router.post('/forgotPassword', (req, res) => {
+    const { email } = req.body;
+
+    if (!email) return res.status(401).json({ error: "Missing a required field" });
+
+    authService.forgotPassword(email)
+        .then((user) => {
+            return res.status(200).json(user);
+        })
+        .catch((err) => {
+            return res.status(401).json({ error: "An error occured resetting password" });
+        });
+});
+
+// PUT: /auth/forgotPassword
+router.put('/resetPassword', (req, res) => {
+    res.send('This will reset password!');
 });
 
 module.exports = router;

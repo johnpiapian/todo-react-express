@@ -6,6 +6,7 @@ function authenticate(email, password) {
     return userService.findByEmail(email)
         .then(async (user) => {
             let passwordVerified = await bcryptUtil.comparePassword(password, user.password);
+
             if (user && passwordVerified) {
                 let { userId, name, email } = user;
 
@@ -29,4 +30,15 @@ async function signup(name, email, password) {
         });
 }
 
-module.exports = { authenticate, signup }
+function forgotPassword(email) {
+    return userService.findByEmail(email)
+        .then((user) => {   
+            if (user) {
+                return jwtUtil.generateToken({ email });
+            } else {
+                throw new Error('Invalid email');
+            }
+        });
+}
+
+module.exports = { authenticate, signup, forgotPassword }
