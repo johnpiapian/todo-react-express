@@ -18,16 +18,17 @@
     user-select: none;
     /* Non-prefixed version, currently supported by Chrome, Edge, Opera and Firefox */
 }
+
 /* End */
 
 .main {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  align-items: center;
-  padding: 6rem;
-  min-height: 100vh;
-  background-color: #476d93;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    padding: 6rem;
+    min-height: 100vh;
+    background-color: #476d93;
 }
 
 .loading {
@@ -116,7 +117,7 @@
     box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
 }
 
-.inputContainer .inputTask:focus{
+.inputContainer .inputTask:focus {
     outline: none;
     border-color: #0d75ec;
 }
