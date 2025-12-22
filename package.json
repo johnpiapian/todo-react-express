@@ -6,7 +6,7 @@
         "install:all": "npm install --workspaces",
         "start": "concurrently 'PORT=8080 npm run start --workspace=frontend' 'npm run start --workspace=backend'",
         "dev": "concurrently 'PORT=8080 npm run dev --workspace=frontend' 'npm run dev --workspace=backend'",
-        "production": "concurrently 'npm run build --workspace=frontend && npm run start --workspace=frontend' 'npm run start --workspace=backend'",
+        "production": "concurrently 'npm run build --workspace=frontend && PORT=${PORT:-80} npm run start --workspace=frontend' 'npm run start --workspace=backend'",
         "docker:desktop": "open -a Docker",
         "docker:start": "docker-compose up --build -d",
         "docker:stop": "docker-compose down",
