@@ -1,6 +1,8 @@
 # todo-react-express
 A remake of my frontend todo app into a fully functional web app by implementing a login system and database integration.
 
+This is a Node.js monorepo with workspaces for backend and frontend.
+
 ## Backend
 This is a backend API built with Node.js and Express framework that uses Sqlite database to store and manage data. It is secured with Jwt and Bcrypt for authentication and authorization purposes. With this tech stack, the API is capable of handling various CRUD operations and delivering data to client-side applications in a fast and reliable way.
 
@@ -19,16 +21,21 @@ Framework: Nextjs
 Docker is utilized to containerize the project, ensuring portability and reproducibility by encapsulating the application and its dependencies. This approach simplifies deployment and enables seamless execution across various environments.
 
 ## Development
-To ease local development setup and execution, the project incorporates certain tooling configurations. To install necessary dependencies for the root and run both the front-end and back-end concurrently, a single command can be used.
+This project uses npm workspaces for managing the monorepo.
 
-To set up root tooling, execute:
+To install dependencies for all workspaces:
 ```
 npm install
 ```
 
-Then, to launch the frontend and backend, execute:
+To run the development servers for both frontend and backend concurrently:
 ```
-npm run build && npm run dev
+npm run dev
 ```
 
-The command `npm run build` is only necessary during the initial setup to install the dependencies for both projects. If you have already completed this step, you can simply run `npm run dev`. For further details, please refer to the package.json file.
+To build and start in production mode:
+```
+npm run production
+```
+
+For more scripts, see package.json.
