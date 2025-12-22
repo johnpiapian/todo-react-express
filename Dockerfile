@@ -6,7 +6,8 @@ COPY . .
 
 # install dependencies and run production build
 RUN npm install
-CMD npm run production
+
+CMD ["npm", "run", "production"]
 
 # port
-EXPOSE 3000 8080
+# EXPOSE 3000 8080

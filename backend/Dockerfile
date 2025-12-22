@@ -6,7 +6,5 @@ COPY . /app/backend
 
 # install dependencies and run production build
 RUN npm install
-CMD npm run start
 
-# port
-EXPOSE 3000
+CMD ["npm", "run", "dev"]
