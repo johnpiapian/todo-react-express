@@ -3,7 +3,6 @@ import { useRouter } from 'next/router';
 import Link from 'next/link';
 import styles from '@/styles/Auth.module.css';
 import Header from '../components/header';
-// import { API_URL } from '@/config/base';
 import config from '@/config/base';
 
 export default function Forgot() {
