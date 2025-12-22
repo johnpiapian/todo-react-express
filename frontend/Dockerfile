@@ -6,7 +6,6 @@ COPY . /app/frontend
 
 # install dependencies and run production build
 RUN npm install
-CMD npm run build && npm run start
+RUN npm run build
 
-# port
-EXPOSE 3000
+CMD ["npm", "run", "start"]

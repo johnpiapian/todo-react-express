@@ -3,7 +3,8 @@ import { useRouter } from 'next/router';
 import Link from 'next/link';
 import styles from '@/styles/Auth.module.css';
 import Header from '../components/header';
-import { API_URL } from '@/config/base';
+// import { API_URL } from '@/config/base';
+import config from '@/config/base';
 
 export default function Forgot() {
     const router = useRouter();
@@ -28,7 +29,7 @@ export default function Forgot() {
         }
 
         // Make API call to reset endpoint with email
-        fetch(`${API_URL()}/auth/forgotPassword`, {
+        fetch(`${config.API_URL}/auth/forgotPassword`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ email })
