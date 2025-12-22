@@ -6,9 +6,11 @@ on:
       - main
     paths:
       - .github/workflows/build-and-push.yaml
-      - frontend/**
       - backend/**
+      - frontend/**
       - docker-compose.yaml
+      - Dockerfile
+      - package.json
   workflow_dispatch:
 
 jobs:
