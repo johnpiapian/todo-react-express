@@ -1,7 +1,7 @@
 services:
   web:
     build: .
-    image: docker.io/johnpiapian/todo-react-express:latest
+    image: ghcr.io/johnpiapian/todo-react-express:latest
     ports:
       - 8081:80
     environment:
